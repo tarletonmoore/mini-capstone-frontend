@@ -14,3 +14,7 @@ a:hover {
 button:hover {
   color: red;
 }
+
+a {
+  text-decoration: none;
+}

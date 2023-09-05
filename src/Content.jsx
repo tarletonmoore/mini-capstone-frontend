@@ -12,6 +12,7 @@ export function Content() {
 const [products, setProducts] = useState([])
 const [isProductsShowVisible, setIsProductsShowVisible] = useState(false)
 const [currentProduct, setCurrentProduct] = useState({})
+// const [images, setImages] = useState([])
 
 const getProducts = () => {
   axios.get("http://localhost:3000/products.json").then(response => {
@@ -64,11 +65,15 @@ const handleDestroyProduct = (product) => {
 useEffect(getProducts, [])
   return (
     <div>
+            <LogoutLink />
+<br></br>
+<br></br>
       <Signup />
+      <br></br>
       <Login />
       <br></br>
-      <LogoutLink />
       <ProductsNew onCreateProduct={handleCreateProduct}/>
+      <br></br>
       <ProductsIndex products={products} onShowProduct={handleShowProduct}/>
       <Modal show={isProductsShowVisible} onClose={handleClose}> 
       <ProductsShow product={currentProduct} onUpdateProduct={handleUpdateProduct} onDestroyProduct={handleDestroyProduct}/>

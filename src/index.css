@@ -3,8 +3,8 @@ html {
 }
 
 #root {
-  background-image: url("./assets/5-dots.png");
-  color: lightgray;
+  background-image: url("./assets/triangles_pattern.webp");
+  color: black;
 }
 
 a:hover {

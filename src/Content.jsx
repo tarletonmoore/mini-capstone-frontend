@@ -7,15 +7,22 @@ import { LogoutLink } from "./LogoutLink"
 import { Modal } from "./Modal"
 import { ProductsShow } from "./ProductsShow"
 import { ProductsNew } from "./ProductsNew"
+import { Routes, Route } from "react-router-dom";
+import { CartedProductsIndex } from "./CartedProductsIndex"
+
 
 export function Content() {
 const [products, setProducts] = useState([])
 const [isProductsShowVisible, setIsProductsShowVisible] = useState(false)
 const [currentProduct, setCurrentProduct] = useState({})
+const [suppliers, setSuppliers] = useState([])
+
+
 // const [images, setImages] = useState([])
 
 const getProducts = () => {
   axios.get("http://localhost:3000/products.json").then(response => {
+    console.log(response.data)
     setProducts(response.data)
   })
 }
@@ -58,26 +65,35 @@ const handleDestroyProduct = (product) => {
                console.log("handleDestroyProduct", product);
                axios.delete(`http://localhost:3000/products/${product.id}.json`).then((response) => {
                  setProducts(products.filter((p) => p.id !== product.id));
-                 handleClose();
-               });
+                 window.location.href = '/products'
+                });
              };
+
+             const getSuppliers = () => {
+              axios.get("http://localhost:3000/suppliers.json").then(response => {
+                console.log(response.data)
+                setSuppliers(response.data)
+              })
+            }
 
 useEffect(getProducts, [])
   return (
     <div>
-            <LogoutLink />
-<br></br>
-<br></br>
-      <Signup />
-      <br></br>
-      <Login />
-      <br></br>
-      <ProductsNew onCreateProduct={handleCreateProduct}/>
-      <br></br>
-      <ProductsIndex products={products} onShowProduct={handleShowProduct}/>
-      <Modal show={isProductsShowVisible} onClose={handleClose}> 
+      
+      {/* <Modal show={isProductsShowVisible} onClose={handleClose}> 
       <ProductsShow product={currentProduct} onUpdateProduct={handleUpdateProduct} onDestroyProduct={handleDestroyProduct}/>
-      </Modal>
+      </Modal> */}
+      <Routes>
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+     <Route path="/products" element={<ProductsIndex products={products} onShowProduct={handleShowProduct}/>} />
+     <Route path="/products/new" element={<ProductsNew onCreateProduct={handleCreateProduct} getSuppliers={getSuppliers} suppliers={suppliers} />
+} />
+
+     <Route path="/products/:id" element={<ProductsShow onDestroyProduct={handleDestroyProduct} onUpdateProduct={handleUpdateProduct} suppliers={suppliers} getSuppliers={getSuppliers} />} />
+      <Route path="/carted_products" element={<CartedProductsIndex />} />
+
+      </Routes>
     </div>
   )
 }
